@@ -12,8 +12,8 @@ const Footer = () => {
             src="/logo.svg"
             alt="logo"
             width={118}
-            height={118}
-            className="object-contain "
+            height={18}
+            className="object-contain"
           />
           <p className="text-base text-gray-700">
             Carhub 2023 <br />
@@ -22,11 +22,11 @@ const Footer = () => {
         </div>
 
         <div className="footer__links">
-          {footerLinks.map((link) => (
-            <div key={link.title} className="footer__link">
-              <h3 className="font-bold"> {link.title}</h3>
+          {footerLinks.map((item) => (
+            <div key={item.title} className="footer__link">
+              <h3 className="font-bold">{item.title}</h3>
               <div className="flex flex-col gap-5">
-                {link.links.map((link) => (
+                {item.links.map((link) => (
                   <Link
                     key={link.title}
                     href={link.url}

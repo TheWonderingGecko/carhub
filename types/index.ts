@@ -6,3 +6,13 @@ export interface CustomButtonProps {
   HandleClick?: MouseEventHandler<HTMLButtonElement>
   BtnType?: 'button' | 'submit'
 }
+
+export interface CustomFilterProps {
+  title: string
+  options: { title: string; value: string }[]
+}
+
+export interface SearchManufacturerProps {
+  manufacturer: string
+  setManuFacturer: (manufacturer: string) => void
+}
