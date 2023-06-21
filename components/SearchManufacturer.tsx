@@ -8,8 +8,8 @@ import { SearchManufacturerProps } from '@/types'
 import { manufacturers } from '@/constants'
 
 const SearchManufacturer = ({
-  manufacturer,
-  setManuFacturer,
+  selected,
+  setSelected,
 }: SearchManufacturerProps) => {
   const [query, setQuery] = useState('')
 
@@ -25,7 +25,7 @@ const SearchManufacturer = ({
 
   return (
     <div className="search-manufacturer">
-      <Combobox value={manufacturer} onChange={setManuFacturer}>
+      <Combobox value={selected} onChange={setSelected}>
         <div className="relative w-full">
           <Combobox.Button className="absolute top-[14px]">
             <Image
@@ -52,7 +52,7 @@ const SearchManufacturer = ({
             afterLeave={() => setQuery('')}
           >
             <Combobox.Options
-              className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+              className="absolute z-[100] w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
               static
             >
               {filteredManufacturers.length === 0 && query !== '' ? (
@@ -67,7 +67,7 @@ const SearchManufacturer = ({
                   <Combobox.Option
                     key={manufacturer}
                     className={({ active }) =>
-                      `relative search-manufacturer__option ${
+                      ` z-10 relative search-manufacturer__option ${
                         active ? 'bg-primary-blue text-white' : 'text-gray-900'
                       }`
                     }

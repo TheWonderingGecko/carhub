@@ -10,9 +10,14 @@ export interface CustomButtonProps {
   isDisabled?: boolean
 }
 
+export interface OptionProps {
+  value: string
+  title: string
+}
+
 export interface CustomFilterProps {
   title: string
-  options: { title: string; value: string }[]
+  options: OptionProps[]
 }
 
 export interface SearchManufacturerProps {
@@ -45,4 +50,9 @@ export interface FilterProps {
 
 export interface HomeProps {
   searchParams: FilterProps
+}
+
+export interface ShowMoreProps {
+  pageNumber: number
+  isNext: boolean
 }
