@@ -1,5 +1,4 @@
 'use client'
-
 import { useState } from 'react'
 import { SearchManufacturer } from '@/components'
 import Image from 'next/image'
@@ -17,27 +16,46 @@ const SearchButton = ({ otherClasses }: { otherClasses: string }) => (
   </button>
 )
 
-const SearchBar = ({ setModel, setManuFacturer }) => {
-  const [searchManufacturer, setSearchManuFacturer] = useState('')
-  const [searchModel, setSearchModel] = useState('')
+// server rendering version waiting on next update to fix scroll postion reset
+const SearchBar = () => {
+  const [manufacturer, setManuFacturer] = useState('')
+  const [model, setModel] = useState('')
   const Router = useRouter()
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (searchManufacturer === '' && searchModel === '') {
+    if (manufacturer === '' && model === '') {
+      console.log(manufacturer)
       return alert('Please enter a manufacturer or model')
     }
 
-    setModel(searchModel)
-    setManuFacturer(searchManufacturer)
+    updateSearchParams(model.toLowerCase(), manufacturer.toLowerCase())
   }
 
+  const updateSearchParams = (model: string, manufacturer: string) => {
+    const searchParams = new URLSearchParams(window.location.search)
+    if (model) {
+      searchParams.set('model', model)
+    } else {
+      searchParams.delete('model')
+    }
+
+    if (manufacturer) {
+      searchParams.set('manufacturer', manufacturer)
+    } else {
+      searchParams.delete('manufacturer')
+    }
+
+    const newPathname = `${window.location.pathname}?${searchParams.toString()}`
+
+    Router.push(newPathname)
+  }
   return (
     <form className="searchbar" onSubmit={handleSearch}>
       <div className="searchbar__item">
         <SearchManufacturer
-          selected={searchManufacturer}
-          setSelected={setSearchManuFacturer}
+          manufacturer={manufacturer}
+          setManuFacturer={setManuFacturer}
         />
 
         <SearchButton otherClasses="sm:hidden" />
@@ -54,8 +72,8 @@ const SearchBar = ({ setModel, setManuFacturer }) => {
         <input
           type="text"
           name="model"
-          value={searchModel}
-          onChange={(e) => setSearchModel(e.target.value)}
+          value={model}
+          onChange={(e) => setModel(e.target.value)}
           placeholder="Tiguan"
           className="searchbar__input"
         />
@@ -66,71 +84,3 @@ const SearchBar = ({ setModel, setManuFacturer }) => {
   )
 }
 export default SearchBar
-
-// server rendering version waiting on next update to fix scroll postion reset
-// const SearchBar = () => {
-//   const [manufacturer, setManuFacturer] = useState('')
-//   const [model, setModel] = useState('')
-//   const Router = useRouter()
-
-//   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault()
-//     if (manufacturer === '' && model === '') {
-//       return alert('Please enter a manufacturer or model')
-//     }
-
-//     updateSearchParams(model.toLowerCase(), manufacturer.toLowerCase())
-//   }
-
-//   const updateSearchParams = (model: string, manufactuer: string) => {
-//     const searchParams = new URLSearchParams(window.location.search)
-//     if (model) {
-//       searchParams.set('model', model)
-//     } else {
-//       searchParams.delete('model')
-//     }
-
-//     if (manufacturer) {
-//       searchParams.set('manufacturer', manufacturer)
-//     } else {
-//       searchParams.delete('manufacturer')
-//     }
-
-//     const newPathname = `${window.location.pathname}?${searchParams.toString()}`
-
-//     Router.push(newPathname)
-//   }
-//   return (
-//     <form className="searchbar" onSubmit={handleSearch}>
-//       <div className="searchbar__item">
-//         <SearchManufacturer
-//           manufacturer={manufacturer}
-//           setManuFacturer={setManuFacturer}
-//         />
-
-//         <SearchButton otherClasses="sm:hidden" />
-//       </div>
-
-//       <div className="searchbar__item">
-//         <Image
-//           src="/model-icon.png"
-//           width={25}
-//           height={25}
-//           alt=" carmodel icon"
-//           className="absolute w-[20px] h-[20px] ml-4 "
-//         />
-//         <input
-//           type="text"
-//           name="model"
-//           value={model}
-//           onChange={(e) => setModel(e.target.value)}
-//           placeholder="Tiguan"
-//           className="searchbar__input"
-//         />
-//         <SearchButton otherClasses="  sm:hidden" />
-//       </div>
-//       <SearchButton otherClasses=" max-sm:hidden" />
-//     </form>
-//   )
-// }
-// export default SearchBar
